@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ScrapperService {
     private WebDriver driver;
-    private long sleepTime = 10000;
+    private long sleepTime = 5000;
 
     public List<News> findFanaNews() throws InterruptedException {
         String type = "Fana";
