@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,24 +26,18 @@ public class NewsController {
 
     @ModelAttribute("dataList")
     public List<News> setNews(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        try {
-            switch (keyword) {
-                case "":
-                    return scrapperService.findAllNews();
-                case "Fana":
-                    return scrapperService.findFanaNews();
-                case "Reporter":
-                    return scrapperService.findReporterNews();
-                case "BBC":
-                    return scrapperService.findBBCNews();
-                default:
-                    break;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        switch (keyword) {
+            case "":
+                return scrapperService.findAllNews();
+            case "Fana":
+                return scrapperService.findFanaNews();
+            case "Reporter":
+                return scrapperService.findReporterNews();
+            case "BBC":
+                return scrapperService.findBBCNews();
+            default:
+                return scrapperService.searchNews(keyword);
         }
-
-        return new ArrayList<>();
     }
 
     @GetMapping
