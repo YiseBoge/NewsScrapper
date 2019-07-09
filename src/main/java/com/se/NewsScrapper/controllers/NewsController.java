@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,31 @@ public class NewsController {
         this.scrapperService = scrapperService;
     }
 
-    @GetMapping
-    public String start() {
-        return "index";
+    @ModelAttribute("dataList")
+    public List<News> setNews(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+        try {
+            switch (keyword) {
+                case "":
+                    return scrapperService.findAllNews();
+                case "Fana":
+                    return scrapperService.findFanaNews();
+                case "Reporter":
+                    return scrapperService.findReporterNews();
+                case "BBC":
+                    return scrapperService.findBBCNews();
+                default:
+                    break;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
     }
 
-    @ModelAttribute("dataList")
-    public List<News> setNews() {
-        return new ArrayList<>();
+    @GetMapping
+    public String start() {
+
+        return "index";
     }
 }
